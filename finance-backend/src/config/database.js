@@ -6,8 +6,10 @@ const connectDB = async () => {
     const conn = await mongoose.connect(process.env.MONGODB_URI);
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
     console.log(`📊 Database Name: ${conn.connection.name}`);
+    return conn;
   } catch (error) {
     console.error(`❌ MongoDB Connection Error: ${error.message}`);
+    console.error('Please check your MONGODB_URI environment variable');
     process.exit(1);
   }
 };

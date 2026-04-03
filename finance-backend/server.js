@@ -1,6 +1,10 @@
 // server.js
 const app = require('./src/app');
 const connectDB = require('./src/config/database');
+const dotenv = require('dotenv');
+
+// Load environment variables FIRST
+dotenv.config();
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
@@ -17,6 +21,7 @@ const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔗 http://localhost:${PORT}`);
   console.log(`❤️  Health check: http://localhost:${PORT}/health`);
 });
@@ -31,10 +36,11 @@ process.on('unhandledRejection', (err) => {
   });
 });
 
-// Graceful shutdown
+// Graceful shutdown for Render
 process.on('SIGTERM', () => {
   console.log('👋 SIGTERM received. Closing server gracefully...');
   server.close(() => {
     console.log('💥 Process terminated!');
+    process.exit(0);
   });
 });
